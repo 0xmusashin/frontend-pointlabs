@@ -4,16 +4,12 @@ import { useState } from "react";
 import { Header, Footer, SmoothScroll } from "@/components/layout";
 import { Hero, About, Projects } from "@/components/sections";
 import { CommandPalette } from "@/components/ui/CommandPalette";
-import { BlockchainChain } from "@/components/blockchain";
 
 export default function Home() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   return (
     <SmoothScroll>
-      {/* Blockchain chain animation layer - behind content */}
-      <BlockchainChain />
-
       <Header onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
       <CommandPalette
         open={commandPaletteOpen}
