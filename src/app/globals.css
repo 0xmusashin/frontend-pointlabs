@@ -1,0 +1,424 @@
+@import "tailwindcss";
+
+/* Design System: Precision & Density + Utility
+   Dark/Light mode support, pure neutrals, green accent
+   Borders-only depth strategy */
+
+/* Shared tokens (theme-agnostic) */
+:root {
+  /* Spacing scale (4px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Border radius - sharp for technical feel */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Typography */
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), 'SF Mono', 'Fira Code', monospace;
+
+  /* Animation */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+}
+
+/* Dark mode (default) */
+:root,
+[data-theme="dark"] {
+  /* Background layers */
+  --background: #0a0a0a;
+  --background-subtle: #111111;
+  --background-muted: #171717;
+
+  /* Foreground hierarchy */
+  --foreground: #fafafa;
+  --foreground-secondary: #a3a3a3;
+  --foreground-muted: #737373;
+  --foreground-faint: #525252;
+
+  /* Borders - subtle definition */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.12);
+
+  /* Accent - green for dev vibe */
+  --accent: #22c55e;
+  --accent-foreground: #0a0a0a;
+  --accent-muted: rgba(34, 197, 94, 0.15);
+
+  /* Semantic colors */
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #ef4444;
+  --info: #3b82f6;
+}
+
+/* Light mode */
+[data-theme="light"] {
+  /* Background layers */
+  --background: #fafafa;
+  --background-subtle: #f4f4f5;
+  --background-muted: #e4e4e7;
+
+  /* Foreground hierarchy */
+  --foreground: #0a0a0a;
+  --foreground-secondary: #52525b;
+  --foreground-muted: #71717a;
+  --foreground-faint: #a1a1aa;
+
+  /* Borders - subtle definition */
+  --border: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.12);
+
+  /* Accent - slightly darker green for contrast */
+  --accent: #16a34a;
+  --accent-foreground: #fafafa;
+  --accent-muted: rgba(22, 163, 74, 0.12);
+
+  /* Semantic colors (adjusted for light backgrounds) */
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #dc2626;
+  --info: #2563eb;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-subtle: var(--background-subtle);
+  --color-background-muted: var(--background-muted);
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-faint: var(--foreground-faint);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-muted: var(--accent-muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Monospace for data */
+.font-mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-muted);
+  color: var(--foreground);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-faint);
+}
+
+/* ASCII art container */
+.ascii-art {
+  font-family: var(--font-mono);
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+  white-space: pre;
+  color: var(--foreground-muted);
+}
+
+/* Smooth scroll container for Lenis */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Blockchain Chain Animation */
+.chain-container {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+.chain-link-wrapper {
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  will-change: transform, opacity;
+}
+
+.chain-link {
+  transform-style: preserve-3d;
+  transition: stroke 0.2s ease;
+}
+
+.chain-link:hover {
+  stroke: var(--accent);
+}
+
+/* Chain link glow on hover (when pointer-events enabled) */
+.chain-link-wrapper:hover .chain-link path {
+  filter: drop-shadow(0 0 8px var(--accent));
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .chain-container,
+  .chain-link-wrapper {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Realistic Chain Animation */
+.chain-link-realistic {
+  transition: all 0.3s var(--ease-out);
+}
+
+.chain-link-realistic:hover rect,
+.chain-link-realistic:hover line {
+  stroke: var(--accent);
+}
+
+.diamond-connector,
+.circle-connector {
+  transition: all 0.3s var(--ease-out);
+}
+
+.diamond-connector:hover rect,
+.diamond-connector:hover circle,
+.circle-connector:hover circle {
+  stroke: var(--accent);
+  fill: var(--accent-muted);
+}
+
+/* Article prose styling */
+.prose-article {
+  --prose-body: var(--foreground-secondary);
+  --prose-headings: var(--foreground);
+  --prose-links: var(--accent);
+  --prose-bold: var(--foreground);
+  --prose-code: var(--accent);
+  --prose-hr: var(--border);
+
+  font-size: 1.0625rem; /* 17px - optimal reading size */
+  line-height: 1.75;
+  color: var(--prose-body);
+}
+
+/* Headings with proper spacing and hierarchy */
+.prose-article h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--prose-headings);
+}
+
+.prose-article h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--prose-headings);
+}
+
+.prose-article h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--prose-headings);
+}
+
+/* Paragraphs with comfortable rhythm */
+.prose-article p {
+  margin-bottom: 1.25rem;
+}
+
+/* Links with subtle underline */
+.prose-article a {
+  color: var(--prose-links);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms;
+}
+.prose-article a:hover {
+  text-decoration-color: var(--accent);
+}
+
+/* Lists with custom bullets and proper spacing */
+.prose-article ul {
+  list-style: none;
+  padding-left: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.prose-article ul li {
+  position: relative;
+  padding-left: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.prose-article ul li::before {
+  content: "—";
+  position: absolute;
+  left: -1.25rem;
+  color: var(--foreground-muted);
+}
+.prose-article ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.prose-article ol li {
+  padding-left: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Code blocks with proper styling */
+.prose-article pre {
+  background: var(--background-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 1.5rem 0;
+}
+
+/* Inline code */
+.prose-article :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--background-muted);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+  color: var(--prose-code);
+}
+
+/* Blockquotes with left border accent */
+.prose-article blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--foreground-secondary);
+}
+.prose-article blockquote p {
+  margin-bottom: 0;
+}
+
+/* Horizontal rules */
+.prose-article hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* Strong/bold text */
+.prose-article strong {
+  font-weight: 600;
+  color: var(--prose-bold);
+}
+
+/* Images with subtle treatment */
+.prose-article img {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  margin: 1.5rem 0;
+}
+
+/* Tables */
+.prose-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9375rem;
+}
+.prose-article th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+.prose-article td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.prose-article tr:last-child td {
+  border-bottom: none;
+}
