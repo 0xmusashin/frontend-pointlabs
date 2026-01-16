@@ -180,6 +180,88 @@ body {
   letter-spacing: -0.05em;
   white-space: pre;
   color: var(--foreground-muted);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ASCII decoration effects */
+.ascii-accent {
+  color: var(--accent);
+}
+
+.ascii-glow {
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+.ascii-glow-subtle {
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--accent) 50%, transparent));
+}
+
+/* ASCII keyframe animations */
+@keyframes ascii-wave {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@keyframes ascii-typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes ascii-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes ascii-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-12px) translateX(4px);
+  }
+}
+
+@keyframes ascii-glitch {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+/* Apply animations via class */
+.ascii-wave {
+  animation: ascii-wave 4s ease-in-out infinite;
+}
+
+.ascii-typing {
+  overflow: hidden;
+  animation: ascii-typing 1.5s steps(40, end) forwards;
+}
+
+.ascii-pulse-anim {
+  animation: ascii-pulse 2.5s ease-in-out infinite;
+}
+
+.ascii-float-anim {
+  animation: ascii-float 8s ease-in-out infinite;
+}
+
+.ascii-glitch-anim {
+  animation: ascii-glitch 0.15s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+/* Reduce motion for accessibility - ASCII */
+@media (prefers-reduced-motion: reduce) {
+  .ascii-wave,
+  .ascii-typing,
+  .ascii-pulse-anim,
+  .ascii-float-anim,
+  .ascii-glitch-anim {
+    animation: none !important;
+  }
 }
 
 /* Smooth scroll container for Lenis */
@@ -269,9 +351,15 @@ html.lenis, html.lenis body {
   --prose-code: var(--accent);
   --prose-hr: var(--border);
 
-  font-size: 1.0625rem; /* 17px - optimal reading size */
+  font-size: 1rem; /* 16px on mobile */
   line-height: 1.75;
   color: var(--prose-body);
+}
+
+@media (min-width: 640px) {
+  .prose-article {
+    font-size: 1.0625rem; /* 17px - optimal reading size on larger screens */
+  }
 }
 
 /* Headings with proper spacing and hierarchy */
@@ -351,12 +439,18 @@ html.lenis, html.lenis body {
   background: var(--background-muted);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 0.75rem;
   overflow-x: auto;
   font-family: var(--font-mono);
   font-size: 0.875rem;
   line-height: 1.6;
   margin: 1.5rem 0;
+}
+
+@media (min-width: 640px) {
+  .prose-article pre {
+    padding: 1rem;
+  }
 }
 
 /* Inline code */
@@ -421,4 +515,49 @@ html.lenis, html.lenis body {
 }
 .prose-article tr:last-child td {
   border-bottom: none;
+}
+
+/* Terminal scrollbar */
+.terminal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  overscroll-behavior: contain;
+}
+
+.terminal-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+
+.terminal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground-faint);
+}
+
+/* Touch device optimizations */
+@media (pointer: coarse) {
+  /* Ensure minimum 44px touch targets for interactive elements */
+  button,
+  a,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Exception for inline links in text */
+  p a,
+  li a,
+  .prose-article a {
+    min-height: auto;
+    min-width: auto;
+  }
 }

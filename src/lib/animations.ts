@@ -143,3 +143,103 @@ export const parallaxRange = {
   medium: [0, 1, 0.3, 1.7] as const,
   fast: [0, 1, 0, 2] as const,
 };
+
+// ASCII decoration animations
+export const asciiFloat: Variants = {
+  initial: { y: 0, x: 0 },
+  animate: {
+    y: [0, -12, 0],
+    x: [0, 4, 0],
+    transition: {
+      duration: 8,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+};
+
+export const asciiPulse: Variants = {
+  initial: { opacity: 0.4 },
+  animate: {
+    opacity: [0.4, 0.7, 0.4],
+    transition: {
+      duration: 2.5,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+};
+
+export const asciiGlitch: Variants = {
+  initial: { x: 0 },
+  animate: {
+    x: [0, -2, 2, -1, 1, 0],
+    transition: {
+      duration: 0.15,
+      repeat: Infinity,
+      repeatDelay: 4,
+      ease: "easeInOut",
+    },
+  },
+};
+
+export const asciiTyping: Variants = {
+  initial: { clipPath: "inset(0 100% 0 0)" },
+  animate: {
+    clipPath: "inset(0 0% 0 0)",
+    transition: {
+      duration: 1.5,
+      ease: "easeOut",
+    },
+  },
+};
+
+export const asciiFadeIn: Variants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { duration: 0.8, ease: "easeOut" },
+  },
+};
+
+// Terminal-specific animations
+export const terminalChrome: Variants = {
+  hidden: { opacity: 0, y: 30, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.6,
+      ease: EASE.out,
+    },
+  },
+};
+
+export const terminalLine: Variants = {
+  hidden: { opacity: 0, x: -8 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.2,
+      ease: EASE.out,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: { duration: 0.15 },
+  },
+};
+
+export const terminalCursor: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: [1, 0],
+    transition: {
+      duration: 1.06,
+      repeat: Infinity,
+      ease: "linear",
+    },
+  },
+};

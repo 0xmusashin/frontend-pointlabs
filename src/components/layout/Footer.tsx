@@ -1,3 +1,5 @@
+/** @format */
+
 import Link from "next/link";
 import { Github, Twitter } from "lucide-react";
 
@@ -8,7 +10,7 @@ const footerLinks = [
 ];
 
 const socialLinks = [
-  { label: "Twitter", href: "https://twitter.com/pointlabs", icon: Twitter },
+  { label: "X", href: "https://x.com/point_labs_", icon: Twitter },
   { label: "GitHub", href: "https://github.com/point-labs", icon: Github },
 ];
 
@@ -70,9 +72,7 @@ export function Footer() {
           <p className="text-xs text-foreground-muted">
             &copy; {new Date().getFullYear()} Point Labs. All rights reserved.
           </p>
-          <p className="text-xs text-foreground-faint font-mono">
-            v0.1.0
-          </p>
+          <p className="text-xs text-foreground-faint font-mono">v0.1.0</p>
         </div>
       </div>
     </footer>

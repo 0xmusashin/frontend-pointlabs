@@ -3,7 +3,10 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Brain, Shield, Network, Zap } from "lucide-react";
-import { fadeUp, slideInLeft, staggerContainer } from "@/lib/animations";
+import { fadeUp, staggerContainer } from "@/lib/animations";
+import { SectionDivider } from "@/components/ascii/AsciiDivider";
+import { AsciiFloatingGroup } from "@/components/ascii/AsciiFloating";
+import { InteractiveTerminal } from "@/components/terminal/InteractiveTerminal";
 
 const focusAreas = [
   {
@@ -28,40 +31,22 @@ const focusAreas = [
   },
 ];
 
-// Card variant with slide and scale
-const cardVariant = {
-  hidden: { opacity: 0, x: -30, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: [0.25, 1, 0.5, 1] as const },
-  },
-};
-
-// Terminal reveal animation
-const terminalVariant = {
-  hidden: { opacity: 0, y: 30, scale: 0.98 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.6, ease: [0.25, 1, 0.5, 1] as const, delay: 0.4 },
-  },
-};
-
 export function About() {
   const headerRef = useRef(null);
   const cardsRef = useRef(null);
-  const terminalRef = useRef(null);
 
   const headerInView = useInView(headerRef, { once: true, margin: "-80px" });
   const cardsInView = useInView(cardsRef, { once: true, margin: "-80px" });
-  const terminalInView = useInView(terminalRef, { once: true, margin: "-80px" });
 
   return (
-    <section id="about" className="py-24 px-4">
-      <div className="max-w-6xl mx-auto">
+    <section id="about" className="relative py-24 px-4 overflow-hidden">
+      {/* Binary divider at top */}
+      <SectionDivider variant="binary" spacing="sm" opacity={0.40} animation="typing" />
+
+      {/* Floating background elements */}
+      <AsciiFloatingGroup size="small" count={3} baseOpacity={0.15} />
+
+      <div className="relative max-w-6xl mx-auto">
         {/* Section header */}
         <motion.div
           ref={headerRef}
@@ -107,18 +92,17 @@ export function About() {
           {focusAreas.map((area) => (
             <motion.div
               key={area.title}
-              className="group p-6 border border-border rounded-lg bg-background-subtle hover:bg-background-muted hover:border-border-strong transition-all duration-200"
-              variants={cardVariant}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="group p-6 border border-border rounded-lg bg-background-subtle
+                         hover:bg-background-muted hover:border-border-strong
+                         hover:scale-[1.02] hover:-translate-y-1
+                         transition-all duration-200"
+              variants={fadeUp}
             >
               <div className="flex items-start gap-4">
-                <motion.div
-                  className="p-2 rounded-md bg-accent-muted text-accent"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
+                <div className="p-2 rounded-md bg-accent-muted text-accent
+                                group-hover:scale-110 transition-transform duration-200">
                   <area.icon className="w-5 h-5" />
-                </motion.div>
+                </div>
                 <div className="space-y-2">
                   <h3 className="font-semibold text-foreground group-hover:text-accent transition-colors duration-200">
                     {area.title}
@@ -132,70 +116,8 @@ export function About() {
           ))}
         </motion.div>
 
-        {/* Terminal-style quote */}
-        <motion.div
-          ref={terminalRef}
-          className="mt-16 p-6 border border-border rounded-lg bg-background-subtle font-mono overflow-hidden"
-          initial="hidden"
-          animate={terminalInView ? "visible" : "hidden"}
-          variants={terminalVariant}
-        >
-          <div className="flex items-center gap-2 text-foreground-muted text-xs mb-4">
-            <motion.span
-              className="w-3 h-3 rounded-full bg-error/50"
-              initial={{ scale: 0 }}
-              animate={terminalInView ? { scale: 1 } : {}}
-              transition={{ delay: 0.6, duration: 0.2 }}
-            />
-            <motion.span
-              className="w-3 h-3 rounded-full bg-warning/50"
-              initial={{ scale: 0 }}
-              animate={terminalInView ? { scale: 1 } : {}}
-              transition={{ delay: 0.7, duration: 0.2 }}
-            />
-            <motion.span
-              className="w-3 h-3 rounded-full bg-success/50"
-              initial={{ scale: 0 }}
-              animate={terminalInView ? { scale: 1 } : {}}
-              transition={{ delay: 0.8, duration: 0.2 }}
-            />
-            <motion.span
-              className="ml-2"
-              initial={{ opacity: 0 }}
-              animate={terminalInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.9 }}
-            >
-              terminal
-            </motion.span>
-          </div>
-          <div className="space-y-1 text-sm">
-            <motion.p
-              className="text-foreground-muted"
-              initial={{ opacity: 0, x: -10 }}
-              animate={terminalInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: 1.0, duration: 0.3 }}
-            >
-              <span className="text-accent">$</span> cat mission.txt
-            </motion.p>
-            <motion.p
-              className="text-foreground-secondary pl-2"
-              initial={{ opacity: 0 }}
-              animate={terminalInView ? { opacity: 1 } : {}}
-              transition={{ delay: 1.2, duration: 0.4 }}
-            >
-              &quot;The future of AI is open, verifiable, and owned by everyone.&quot;
-            </motion.p>
-            <motion.p
-              className="text-foreground-muted"
-              initial={{ opacity: 0 }}
-              animate={terminalInView ? { opacity: 1 } : {}}
-              transition={{ delay: 1.5, duration: 0.3 }}
-            >
-              <span className="text-accent">$</span>{" "}
-              <span className="animate-pulse">▊</span>
-            </motion.p>
-          </div>
-        </motion.div>
+        {/* Interactive Terminal */}
+        <InteractiveTerminal className="mt-16" />
       </div>
     </section>
   );
